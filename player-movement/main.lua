@@ -7,13 +7,17 @@ function love.load()
     speed = 8
   }
 
+  block = {
+    size = 32
+  }
+
   map = {
     { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
     { 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 },
-    { 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1 },
-    { 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1 },
-    { 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1 },
-    { 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0 }, -- give the player a door.
+    { 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1 },
+    { 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1 },
+    { 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1 },
+    { 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1 },
     { 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
     { 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
     { 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
@@ -22,24 +26,36 @@ function love.load()
     { 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 },
     { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
   }
+
+  character_actions = {
+    up = function(character)
+      if testMap(0, -1) then
+        character.grid_y = character.grid_y - block.size
+      end
+    end,
+    down = function(character)
+      if testMap(0, 1) then
+        character.grid_y = character.grid_y + block.size
+      end
+    end,
+    left = function(character)
+      if testMap(-1, 0) then
+        character.grid_x = character.grid_x - block.size
+      end
+    end,
+    right = function(character)
+      if testMap(1, 0) then
+        character.grid_x = character.grid_x + block.size
+      end
+    end
+  }
+
 end
 
 function love.draw()
-  for y=1, #map do
-    for x=1, #map[y] do
-      if map[y][x] == 1 then
-        love.graphics.rectangle("line", x * 32, y * 32, 32, 32)
-      end
-    end
-  end
-
-  love.graphics.rectangle("fill", player.act_x, player.act_y, 32, 32)
-
-  local px_coord = string.format("Player X: %s", player.grid_x)
-  local py_coord = string.format("Player Y: %s", player.grid_y)
-
-  love.graphics.print(px_coord, 700, 550)
-  love.graphics.print(py_coord, 700, 550 + 12)
+  drawMap()
+  drawPlayer()
+  drawStats()
 end
 
 function love.update(dt)
@@ -48,37 +64,44 @@ function love.update(dt)
 end
 
 function love.keypressed(key)
-  local actions = {
-    up = function()
-      if testMap(0, -1) then
-        player.grid_y = player.grid_y - 32
-      end
-    end,
-    down = function()
-      if testMap(0, 1) then
-        player.grid_y = player.grid_y + 32
-      end
-    end,
-    left = function()
-      if testMap(-1, 0) then
-        player.grid_x = player.grid_x - 32
-      end
-    end,
-    right = function()
-      if testMap(1, 0) then
-        player.grid_x = player.grid_x + 32
-      end
-    end
-  }
-
-  if type(actions[key]) == "function" then
-    actions[key](player)
+  if type(character_actions[key]) == "function" then
+    character_actions[key](player)
   end
 end
 
-function testMap(x, y)
-  if map[(player.grid_y / 32) + y][(player.grid_x / 32) + x] == 1 then
+function testMap(x_delta, y_delta)
+  if map[(player.grid_y / block.size) + y_delta][(player.grid_x / block.size) + x_delta] == 1 then
     return false
   end
   return true
+end
+
+function drawBlock(x, y)
+  love.graphics.rectangle("line", x * block.size, y * block.size, block.size, block.size)
+end
+
+function drawPlayer()
+  love.graphics.rectangle("fill", player.act_x, player.act_y, block.size, block.size)
+end
+
+function drawStats()
+  local px_coord = string.format("P X: %s", player.grid_x)
+  local py_coord = string.format("P Y: %s", player.grid_y)
+  local pxact_coord = string.format("X Act: %s", player.act_x)
+  local pyact_coord = string.format("Y Act: %s", player.act_x)
+
+  love.graphics.print(px_coord, 620, 550)
+  love.graphics.print(py_coord, 620, 550 + 12)
+  love.graphics.print(pxact_coord, 620, 550 + (12 * 2))
+  love.graphics.print(pyact_coord, 620, 550 + (12 * 3))
+end
+
+function drawMap() 
+  for y=1, #map do
+    for x=1, #map[y] do
+      if map[y][x] == 1 then
+        drawBlock(x, y)
+      end
+    end
+  end
 end
