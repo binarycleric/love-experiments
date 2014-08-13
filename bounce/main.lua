@@ -5,12 +5,27 @@ function love.load()
   local width, height = love.graphics.getDimensions()
   math.randomseed(os.time())
 
+  local start_radius = math.random(25, 100)
+  local start_x = math.random(0, width)
+  local start_y = math.random(0, height)
+  
+  -- TODO: remove this and add sanity checks to update method.
+  if start_x < start_radius then
+    start_x = start_x + start_radius
+  end
+
+  if start_y < start_radius then
+    start_y = start_y + start_radius
+  end
+
   local ball = Ball:new({
-    x = math.random(0, width),
-    y = math.random(0, height),
-    radius = math.random(25,100),
+    x = start_x,
+    y = start_y,
+    radius = start_radius,
     speed = math.random(250, 800),    
   })
+  ball:randomize_direction()
+  ball:randomize_color()
 
   board = Board:new()
   board:setup(love.graphics)
@@ -28,6 +43,9 @@ function love.mousepressed(mouse_x, mouse_y, button)
     radius = math.random(25,100),
     speed = math.random(250, 800),
   })
+  ball:randomize_direction()
+  ball:randomize_color()
+
   board:add_ball(ball)
 end
 

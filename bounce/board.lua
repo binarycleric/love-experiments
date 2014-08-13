@@ -21,9 +21,6 @@ function Board:setup(graphics)
 end
 
 function Board:add_ball(ball)
-  ball:randomize_direction()
-  ball:randomize_color()
-
   self.balls[#self.balls+1] = ball 
 end
 
