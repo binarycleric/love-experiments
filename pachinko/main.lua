@@ -14,10 +14,10 @@ function love.load()
   last_gc = 0
 
   Block.create(world, 250, 400, 0.1)
-  Block.create(world, 200, 300, -0.125)
+  Block.create(world, 200, 300, -0.85)
 
   Block.create(world, 512, 250, 0.5)
-  Block.create(world, 600, 400, 0.1)
+  Block.create(world, 600, 400, 0.25)
 
   Block.create(world, 325, 600, 0.15)
 end
