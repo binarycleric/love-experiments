@@ -32,20 +32,9 @@ Ball.getCount = function(would)
   return i
 end
 
--- Destroy any balls that have left the viewing area
-Ball.garbageCollect = function(world)
-  for key, body in pairs(world:getBodyList()) do
-    if body:getUserData().object_type == "ball" then
-      if body:getX() > 850 or body:getY() > 675 then
-        body:destroy()
-      end
-    end
-  end
-end
-
-Ball.draw = function(graphics, body)
+Ball.draw = function(body)
   local color = body:getUserData().color
-  graphics.setColor(color.red, color.green, color.blue)
+  love.graphics.setColor(color.red, color.green, color.blue)
   for key, fixture in pairs(body:getFixtureList()) do
     local shape = fixture:getShape()
     love.graphics.circle(
