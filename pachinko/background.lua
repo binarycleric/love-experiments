@@ -6,6 +6,11 @@ Background = {
 }
 
 Background.buildMap = function(world)
+  Block.create(world, 10, 325, 20, 650)
+  Block.create(world, 790, 325, 20, 650)
+  Block.create(world, 150, 10, 260, 20)
+  Block.create(world, 650, 10, 260, 20)
+
   for y=100, 400, 100 do
     for x=100, 700, 75 do
       Block.create(world, x, y, 20, 20)
