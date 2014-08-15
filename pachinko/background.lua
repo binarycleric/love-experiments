@@ -34,11 +34,21 @@ Background.garbageCollect = function(world)
   end
 end
 
+Background.nukeBalls = function(world)
+  for key, body in pairs(world:getBodyList()) do
+    if body:getUserData().object_type == "ball" then
+      body:destroy()
+    end
+  end
+end
+
 Background.update = function(world, dt)
   world:update(dt)
 
-  for i = 0, math.random(0, 3), 1 do
-    Ball.create(world, math.random(300, 500), -1, 5)  
+  if Ball.getCount(world) < 250 then  
+    for i = 0, math.random(0, 3), 1 do
+      Ball.create(world, math.random(300, 500), -1, 5)  
+    end
   end
 
   Background.last_gc = Background.last_gc + dt
@@ -55,6 +65,10 @@ Background.drawHud = function()
   love.graphics.print(string.format("Balls : %s", Ball.getCount(world)), 10, 10)
   love.graphics.print(string.format("FPS : %s", love.timer.getFPS()), 10, 40)
   love.graphics.print(string.format("Score : %s", Background.score), 10, 70)
+
+  grav_x, grav_y = world:getGravity() 
+  love.graphics.print(string.format("Gravity: %.2f, %.2f", grav_x, grav_y), 10, 100) 
+
 end
 
 Background.drawWorld = function(world)
