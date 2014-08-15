@@ -17,7 +17,15 @@ Trap.create = function(world, x, y, size)
 end
 
 Trap.draw = function(body)
-  Block.draw(body)
+  local color = body:getUserData().color
+  love.graphics.setColor(color.red, color.green, color.blue)
+  for key, fixture in pairs(body:getFixtureList()) do
+    local shape = fixture:getShape()
+    love.graphics.polygon(
+      "fill", 
+      body:getWorldPoints(shape:getPoints())
+    )
+  end
 end
 
 Trap.beginContact = function(trap, ball, contact)
