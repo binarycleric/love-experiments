@@ -6,30 +6,15 @@ Background = {
 }
 
 Background.buildMap = function(world)
-  Block.create(world, 100, 100, 20, 20)
-  Block.create(world, 175, 100, 20, 20)
-  Block.create(world, 250, 100, 20, 20)
-  Block.create(world, 325, 100, 20, 20)
-  Block.create(world, 400, 100, 20, 20)
-  Block.create(world, 475, 100, 20, 20) 
-
-  Block.create(world, 100+50, 200, 20, 20)
-  Block.create(world, 175+50, 200, 20, 20)
-  Block.create(world, 250+50, 200, 20, 20)
-  Block.create(world, 325+50, 200, 20, 20)
-  Block.create(world, 400+50, 200, 20, 20)
-  Block.create(world, 475+50, 200, 20, 20) 
-
-  Block.create(world, 100-25, 300, 20, 20)
-  Block.create(world, 175-25, 300, 20, 20)
-  Block.create(world, 250-25, 300, 20, 20)
-  Block.create(world, 325-25, 300, 20, 20)
-  Block.create(world, 400-25, 300, 20, 20)
-  Block.create(world, 475-25, 300, 20, 20) 
+  for y=100, 400, 100 do
+    for x=100, 700, 75 do
+      Block.create(world, x, y, 20, 20)
+    end
+  end
 
   Trap.create(world, 100, 575) 
-  Trap.create(world, 100+250, 575)
-  Trap.create(world, 100+250+250, 575)
+  Trap.create(world, 350, 575)
+  Trap.create(world, 600, 575)
 
   world:setCallbacks(Trap.beginContact)
 end
@@ -48,7 +33,7 @@ Background.update = function(world, dt)
   world:update(dt)
 
   for i = 0, math.random(0, 3), 1 do
-    Ball.create(world, math.random(300, 350), -1, 5)  
+    Ball.create(world, math.random(300, 500), -1, 5)  
   end
 
   Background.last_gc = Background.last_gc + dt
