@@ -66,8 +66,8 @@ Background.drawHud = function()
   love.graphics.print(string.format("FPS : %s", love.timer.getFPS()), 10, 40)
   love.graphics.print(string.format("Score : %s", Background.score), 10, 70)
 
-  grav_x, grav_y = world:getGravity() 
-  love.graphics.print(string.format("Gravity: %.2f, %.2f", grav_x, grav_y), 10, 100) 
+  -- grav_x, grav_y = world:getGravity() 
+  -- love.graphics.print(string.format("Gravity: %.2f, %.2f", grav_x, grav_y), 10, 100) 
 
 end
 
