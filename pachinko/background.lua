@@ -45,7 +45,7 @@ end
 Background.update = function(world, dt)
   world:update(dt)
 
-  if Ball.getCount(world) < 250 then  
+  if Ball.getCount(world) < 400 then  
     for i = 0, math.random(0, 3), 1 do
       Ball.create(world, math.random(300, 500), -1, 5)  
     end
@@ -66,9 +66,8 @@ Background.drawHud = function()
   love.graphics.print(string.format("FPS : %s", love.timer.getFPS()), 10, 40)
   love.graphics.print(string.format("Score : %s", Background.score), 10, 70)
 
-  -- grav_x, grav_y = world:getGravity() 
-  -- love.graphics.print(string.format("Gravity: %.2f, %.2f", grav_x, grav_y), 10, 100) 
-
+  grav_x, grav_y = world:getGravity() 
+  love.graphics.print(string.format("Gravity: %.2f, %.2f", grav_x, grav_y), 10, 100) 
 end
 
 Background.drawWorld = function(world)
