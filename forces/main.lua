@@ -35,7 +35,27 @@ function love.update(dt)
     player_body:applyTorque(1000)
   end
 
+
+  if love.keyboard.isDown("up") then
+    player_body:applyLinearImpulse(0, -5)
+  end
+
+  if love.keyboard.isDown("right") then
+    player_body:applyLinearImpulse(5, 0)
+  end
+
+  if love.keyboard.isDown("left") then
+    player_body:applyLinearImpulse(-5, 0)
+  end
+
+
   world:update(dt)
+end
+
+function love.keypressed(key)
+  if key == ' ' then
+    player_body:applyLinearImpulse(0, -275)
+  end
 end
 
 function love.draw()
@@ -104,7 +124,7 @@ Player.create = function()
     }
   }
 
-  fixture:setRestitution(0.85)
+  fixture:setRestitution(0)
   body:setUserData(attributes)
 
   return body
